@@ -2,6 +2,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QGraphicsView>
+#include <QVBoxLayout>
 
 #include "mainwindow.h"
 #include "diagramitem.h"
@@ -244,22 +245,20 @@ void MainWindow::about()
 
 void MainWindow::createToolBox()
 {
+
     buttonGroup = new QButtonGroup(this);
     buttonGroup->setExclusive(false);
     connect(buttonGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(buttonGroupClicked(int)));
-    QGridLayout *layout = new QGridLayout;
-    layout->addWidget(createCellWidget(tr("Conditional"),
-                               DiagramItem::Conditional), 0, 0);
-    layout->addWidget(createCellWidget(tr("Process"),
-                      DiagramItem::Step),0, 1);
-    layout->addWidget(createCellWidget(tr("Input/Output"),
-                      DiagramItem::Io), 1, 0);
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(createCellWidget(tr("Conditional"),DiagramItem::Conditional));
+    layout->addWidget(createCellWidget(tr("Process"),DiagramItem::Step));
+    layout->addWidget(createCellWidget(tr("Input/Output"),DiagramItem::Io));
 
     QToolButton *textButton = new QToolButton;
     textButton->setCheckable(true);
     buttonGroup->addButton(textButton, InsertTextButton);
-    textButton->setIcon(QIcon(QPixmap(":/images/textpointer.png")
+    textButton->setIcon(QIcon(QPixmap(":/MojeSkarby/textpointer.png")
                         .scaled(30, 30)));
     textButton->setIconSize(QSize(50, 50));
     QGridLayout *textLayout = new QGridLayout;
@@ -267,10 +266,10 @@ void MainWindow::createToolBox()
     textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
     QWidget *textWidget = new QWidget;
     textWidget->setLayout(textLayout);
-    layout->addWidget(textWidget, 1, 1);
+    layout->addWidget(textWidget);
 
-    layout->setRowStretch(3, 10);
-    layout->setColumnStretch(2, 10);
+    //layout->setStretch(0,10);
+    //layout->setColumnStretch(2, 10);
 
     QWidget *itemWidget = new QWidget;
     itemWidget->setLayout(layout);
@@ -279,25 +278,24 @@ void MainWindow::createToolBox()
     connect(backgroundButtonGroup, SIGNAL(buttonClicked(QAbstractButton*)),
             this, SLOT(backgroundButtonGroupClicked(QAbstractButton*)));
 
-    QGridLayout *backgroundLayout = new QGridLayout;
+    QVBoxLayout *backgroundLayout = new QVBoxLayout;
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("Blue Grid"),
-                ":/images/background1.png"), 0, 0);
+                ":/MojeSkarby/background1.png"));
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("White Grid"),
-                ":/images/background2.png"), 0, 1);
+                ":/MojeSkarby/background2.png"));
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("Gray Grid"),
-                    ":/images/background3.png"), 1, 0);
+                    ":/MojeSkarby/background3.png"));
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("No Grid"),
-                ":/images/background4.png"), 1, 1);
+                ":/MojeSkarby/background4.png"));
 
-    backgroundLayout->setRowStretch(2, 10);
-    backgroundLayout->setColumnStretch(2, 10);
+    //backgroundLayout->setStretch(2,10);
 
     QWidget *backgroundWidget = new QWidget;
     backgroundWidget->setLayout(backgroundLayout);
 
     toolBox = new QToolBox;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
-    toolBox->setMinimumWidth(itemWidget->sizeHint().width());
+    toolBox->setMinimumWidth(itemWidget->sizeHint().width()+18);
     toolBox->addItem(itemWidget, tr("Basic Flowchart Shapes"));
     toolBox->addItem(backgroundWidget, tr("Backgrounds"));
 }

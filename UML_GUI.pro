@@ -26,3 +26,6 @@ HEADERS  += mainwindow.h \
     diagramtextitem.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    mojeres.qrc
