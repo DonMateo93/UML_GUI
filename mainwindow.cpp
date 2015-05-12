@@ -251,22 +251,27 @@ void MainWindow::createToolBox()
     connect(buttonGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(buttonGroupClicked(int)));
     QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(createCellWidget(tr("Conditional"),DiagramItem::Conditional));
-    layout->addWidget(createCellWidget(tr("Process"),DiagramItem::Step));
-    layout->addWidget(createCellWidget(tr("Input/Output"),DiagramItem::Io));
 
-    QToolButton *textButton = new QToolButton;
-    textButton->setCheckable(true);
-    buttonGroup->addButton(textButton, InsertTextButton);
-    textButton->setIcon(QIcon(QPixmap(":/MojeSkarby/textpointer.png")
-                        .scaled(30, 30)));
-    textButton->setIconSize(QSize(50, 50));
-    QGridLayout *textLayout = new QGridLayout;
-    textLayout->addWidget(textButton, 0, 0, Qt::AlignHCenter);
-    textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
-    QWidget *textWidget = new QWidget;
-    textWidget->setLayout(textLayout);
-    layout->addWidget(textWidget);
+    for ( int fooInt = DiagramItem::Class; fooInt != DiagramItem::Union + 1; fooInt++ )
+    {
+       layout->addWidget(createCellWidget(static_cast<DiagramItem::DiagramType>(fooInt)));
+    }
+
+//    layout->addWidget(createCellWidget(DiagramItem::Step));
+//    layout->addWidget(createCellWidget(DiagramItem::Io));
+
+//    QToolButton *textButton = new QToolButton;
+//    textButton->setCheckable(true);
+//    buttonGroup->addButton(textButton, InsertTextButton);
+//    textButton->setIcon(QIcon(QPixmap(":/MojeSkarby/textpointer.png")
+//                        .scaled(30, 30)));
+//    textButton->setIconSize(QSize(50, 50));
+//    QGridLayout *textLayout = new QGridLayout;
+//    textLayout->addWidget(textButton, 0, 0, Qt::AlignHCenter);
+//    textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
+//    QWidget *textWidget = new QWidget;
+//    textWidget->setLayout(textLayout);
+//    layout->addWidget(textWidget);
 
     //layout->setStretch(0,10);
     //layout->setColumnStretch(2, 10);
@@ -279,14 +284,16 @@ void MainWindow::createToolBox()
             this, SLOT(backgroundButtonGroupClicked(QAbstractButton*)));
 
     QVBoxLayout *backgroundLayout = new QVBoxLayout;
-    backgroundLayout->addWidget(createBackgroundCellWidget(tr("Blue Grid"),
-                ":/MojeSkarby/background1.png"));
-    backgroundLayout->addWidget(createBackgroundCellWidget(tr("White Grid"),
-                ":/MojeSkarby/background2.png"));
-    backgroundLayout->addWidget(createBackgroundCellWidget(tr("Gray Grid"),
-                    ":/MojeSkarby/background3.png"));
-    backgroundLayout->addWidget(createBackgroundCellWidget(tr("No Grid"),
-                ":/MojeSkarby/background4.png"));
+    backgroundLayout->addWidget(createBackgroundCellWidget(tr("Generalization"),
+                ":/MojeSkarby/UML_Arrows/Generalization.png"));
+    backgroundLayout->addWidget(createBackgroundCellWidget(tr("Dependency"),
+                ":/MojeSkarby/UML_Arrows/Dependency.png"));
+    backgroundLayout->addWidget(createBackgroundCellWidget(tr("Composition"),
+                    ":/MojeSkarby/UML_Arrows/Composition.png"));
+    backgroundLayout->addWidget(createBackgroundCellWidget(tr("Aggregation"),
+                ":/MojeSkarby/UML_Arrows/Aggregation.png"));
+    backgroundLayout->addWidget(createBackgroundCellWidget(tr("Association"),
+                ":/MojeSkarby/UML_Arrows/Association.png"));
 
     //backgroundLayout->setStretch(2,10);
 
@@ -469,7 +476,7 @@ QWidget *MainWindow::createBackgroundCellWidget(const QString &text,
     QToolButton *button = new QToolButton;
     button->setText(text);
     button->setIcon(QIcon(image));
-    button->setIconSize(QSize(50, 50));
+    button->setIconSize(QSize(50, 20));
     button->setCheckable(true);
     backgroundButtonGroup->addButton(button);
 
@@ -483,22 +490,18 @@ QWidget *MainWindow::createBackgroundCellWidget(const QString &text,
     return widget;
 }
 
-QWidget *MainWindow::createCellWidget(const QString &text,
-                      DiagramItem::DiagramType type)
+QWidget *MainWindow::createCellWidget(DiagramItem::DiagramType type)
 {
-
     DiagramItem item(type, itemMenu);
-    QIcon icon(item.image());
 
     QToolButton *button = new QToolButton;
-    button->setIcon(icon);
-    button->setIconSize(QSize(50, 50));
+    button->setText(item.textForButton());
     button->setCheckable(true);
+    button->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
     buttonGroup->addButton(button, int(type));
 
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(button, 0, 0, Qt::AlignHCenter);
-    layout->addWidget(new QLabel(text), 1, 0, Qt::AlignCenter);
 
     QWidget *widget = new QWidget;
     widget->setLayout(layout);

@@ -27,7 +27,9 @@ class DiagramItem : public QGraphicsPolygonItem
 {
 public:
     enum { Type = UserType + 15 };
-    enum DiagramType { Step, Conditional, StartEnd, Io };
+    // ściśle zabronione specyfikować poszczególne liczby dla poniższej struktury
+    // Jeżeli dodajemy nowy element do struktury to nie na koniec ani na początek!
+    enum DiagramType {Class, Struct, Namespace, Enum, Union};
 
     DiagramItem(DiagramType diagramType, QMenu *contextMenu,
         QGraphicsItem *parent = 0);
@@ -40,6 +42,7 @@ public:
         { return myPolygon; }
     void addArrow(Arrow *arrow);
     QPixmap image() const;
+    QString textForButton();
     int type() const
         { return Type;}
 

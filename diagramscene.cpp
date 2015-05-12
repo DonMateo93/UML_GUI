@@ -8,7 +8,7 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
 {
     myItemMenu = itemMenu;
     myMode = MoveItem;
-    myItemType = DiagramItem::Step;
+    myItemType = DiagramItem::Class;
     line = 0;
     textItem = 0;
     myItemColor = Qt::white;

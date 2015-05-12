@@ -15,5 +15,10 @@
         <file>pointer.png</file>
         <file>sendtoback.png</file>
         <file>underline.png</file>
+        <file>UML_Arrows/Aggregation.png</file>
+        <file>UML_Arrows/Association.png</file>
+        <file>UML_Arrows/Composition.png</file>
+        <file>UML_Arrows/Dependency.png</file>
+        <file>UML_Arrows/Generalization.png</file>
     </qresource>
 </RCC>

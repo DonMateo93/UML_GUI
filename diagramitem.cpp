@@ -12,7 +12,7 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
 
     QPainterPath path;
     switch (myDiagramType) {
-        case StartEnd:
+        case Class:
             path.moveTo(200, 50);
             path.arcTo(150, 0, 50, 50, 0, 90);
             path.arcTo(50, 0, 50, 50, 90, 90);
@@ -21,20 +21,23 @@ DiagramItem::DiagramItem(DiagramType diagramType, QMenu *contextMenu,
             path.lineTo(200, 25);
             myPolygon = path.toFillPolygon();
             break;
-        case Conditional:
+        case Struct:
             myPolygon << QPointF(-100, 0) << QPointF(0, 100)
                       << QPointF(100, 0) << QPointF(0, -100)
                       << QPointF(-100, 0);
             break;
-        case Step:
+        case Namespace:
             myPolygon << QPointF(-100, -100) << QPointF(100, -100)
                       << QPointF(100, 100) << QPointF(-100, 100)
                       << QPointF(-100, -100);
             break;
-        default:
+        case Union:
             myPolygon << QPointF(-120, -80) << QPointF(-70, 80)
                       << QPointF(120, 80) << QPointF(70, -80)
                       << QPointF(-120, -80);
+            break;
+        case Enum:
+
             break;
     }
     setPolygon(myPolygon);
@@ -95,4 +98,30 @@ QVariant DiagramItem::itemChange(GraphicsItemChange change,
     }
 
     return value;
+}
+
+QString DiagramItem::textForButton()
+{
+    QString Product;
+
+    switch(myDiagramType)
+    {
+    case Class:
+        Product = "Class";
+        break;
+    case Struct:
+        Product = "Struct";
+        break;
+    case Namespace:
+        Product = "Namespace";
+        break;
+    case Union:
+        Product = "Union";
+        break;
+    case Enum:
+        Product = "Enum";
+        break;
+    }
+
+    return Product;
 }
