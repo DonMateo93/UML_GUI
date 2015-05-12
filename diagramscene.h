@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsItemGroup>
 #include "diagramitem.h"
 #include "diagramtextitem.h"
 

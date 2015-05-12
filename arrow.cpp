@@ -2,11 +2,11 @@
 
 #include "arrow.h"
 #include <math.h>
+#include <QTransform>
 
 const qreal Pi = 3.14;
 
-Arrow::Arrow(DiagramItem *startItem, DiagramItem *endItem,
-         QGraphicsItem *parent)
+Arrow::Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem,QGraphicsItem *parent)
     : QGraphicsLineItem(parent)
 {
     myStartItem = startItem;
@@ -33,14 +33,118 @@ QPainterPath Arrow::shape() const
     return path;
 }
 
-void Arrow::updatePosition()
+void Arrow::pozycjaPrzesunietaDoSrodka(QPoint &startElem, QPoint &endElem)
 {
-    QLineF line(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
-    setLine(line);
+    QTransform transform;
+    QPolygon polygon = transform.mapToPolygon(myEndItem->boundingRect().toRect());
+    QPoint p1 = polygon.at(0);
+    QPoint p2 = polygon.at(0);
+
+    QPoint observer1 = mapFromItem(myStartItem, 0, 0).toPoint();
+    QPoint observer2 = mapFromItem(myEndItem, 0, 0).toPoint();
+
+    foreach(QPoint pomoc, polygon)
+    {
+        if(p1.x() < pomoc.x())
+            p1.setX(pomoc.x());
+
+        if(p1.y() < pomoc.y())
+            p1.setY(pomoc.y());
+
+        if(p2.x() > pomoc.x())
+            p2.setX(pomoc.x());
+
+        if(p2.y() > pomoc.y())
+            p2.setY(pomoc.y());
+    }
+
+    polygon = transform.mapToPolygon(myStartItem->boundingRect().toRect());
+    QPoint p3 = polygon.at(0);
+    QPoint p4 = polygon.at(0);
+
+    foreach(QPoint pomoc, polygon)
+    {
+        if(p3.x() < pomoc.x())
+            p3.setX(pomoc.x());
+
+        if(p3.y() < pomoc.y())
+            p3.setY(pomoc.y());
+
+        if(p4.x() > pomoc.x())
+            p4.setX(pomoc.x());
+
+        if(p4.y() > pomoc.y())
+            p4.setY(pomoc.y());
+    }
+
+    double liczbax = (p3.x() - p4.x())/2;
+    double liczbay = (p3.y() - p4.y())/2;
+    startElem.setX(observer1.x() + liczbax);
+    startElem.setY(observer1.y() + liczbay);
+    double liczbax2 = (p1.x() - p2.x())/2;
+    double liczbay2 = (p1.y() - p2.y())/2;
+    endElem.setX(observer2.x() + liczbax2);
+    endElem.setY(observer2.y() + liczbay2);
 }
 
-void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-          QWidget *)
+void Arrow::updatePosition()
+{
+    QTransform transform;
+    QPolygon polygon = transform.mapToPolygon(myEndItem->boundingRect().toRect());
+    QPoint p1 = polygon.at(0);
+    QPoint p2 = polygon.at(0);
+
+    QPoint observer1 = mapFromItem(myStartItem, 0, 0).toPoint();
+    QPoint observer2 = mapFromItem(myEndItem, 0, 0).toPoint();
+
+    foreach(QPoint pomoc, polygon)
+    {
+        if(p1.x() < pomoc.x())
+            p1.setX(pomoc.x());
+
+        if(p1.y() < pomoc.y())
+            p1.setY(pomoc.y());
+
+        if(p2.x() > pomoc.x())
+            p2.setX(pomoc.x());
+
+        if(p2.y() > pomoc.y())
+            p2.setY(pomoc.y());
+    }
+
+    polygon = transform.mapToPolygon(myStartItem->boundingRect().toRect());
+    QPoint p3 = polygon.at(0);
+    QPoint p4 = polygon.at(0);
+
+    foreach(QPoint pomoc, polygon)
+    {
+        if(p3.x() < pomoc.x())
+            p3.setX(pomoc.x());
+
+        if(p3.y() < pomoc.y())
+            p3.setY(pomoc.y());
+
+        if(p4.x() > pomoc.x())
+            p4.setX(pomoc.x());
+
+        if(p4.y() > pomoc.y())
+            p4.setY(pomoc.y());
+    }
+
+    double liczbax = (p3.x() - p4.x())/2;
+    double liczbay = (p3.y() - p4.y())/2;
+    QPoint pStart(observer1.x() + liczbax,observer1.y() + liczbay);
+
+    double liczbax2 = (p1.x() - p2.x())/2;
+    double liczbay2 = (p1.y() - p2.y())/2;
+    QPoint pEnd(observer2.x() + liczbax2,observer2.y() + liczbay2);
+
+    QLineF line(pStart, pEnd);
+    setLine(line);
+
+}
+
+void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)
 {
     if (myStartItem->collidesWithItem(myEndItem))
         return;
@@ -51,14 +155,19 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     painter->setPen(myPen);
     painter->setBrush(myColor);
 
-    QLineF centerLine(myStartItem->pos(), myEndItem->pos());
-    QPolygonF endPolygon = myEndItem->polygon();
-    QPointF p1 = endPolygon.first() + myEndItem->pos();
+    QPoint startElem,endElem;
+    pozycjaPrzesunietaDoSrodka(startElem,endElem);
+
+    QLineF centerLine(startElem, endElem);
+    QTransform transform;
+    QPolygon polygon = transform.mapToPolygon(myEndItem->boundingRect().toRect());
+    QPolygonF endPolygon = polygon;
+    QPointF p1 = endPolygon.first() + endElem;
     QPointF p2;
     QPointF intersectPoint;
     QLineF polyLine;
     for (int i = 1; i < endPolygon.count(); ++i) {
-    p2 = endPolygon.at(i) + myEndItem->pos();
+    p2 = endPolygon.at(i) + endElem;
     polyLine = QLineF(p1, p2);
     QLineF::IntersectType intersectType =
         polyLine.intersect(centerLine, &intersectPoint);
@@ -67,7 +176,7 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         p1 = p2;
     }
 
-    setLine(QLineF(intersectPoint, myStartItem->pos()));
+    setLine(QLineF(intersectPoint, startElem));
 
     double angle = ::acos(line().dx() / line().length());
     if (line().dy() >= 0)

@@ -146,7 +146,7 @@ void MainWindow::itemInserted(DiagramItem *item)
 
 void MainWindow::textInserted(QGraphicsTextItem *)
 {
-    buttonGroup->button(InsertTextButton)->setChecked(false);
+    //buttonGroup->button(InsertTextButton)->setChecked(false);
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
 }
 

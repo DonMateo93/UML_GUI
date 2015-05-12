@@ -92,9 +92,29 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         case InsertItem:
             item = new DiagramItem(myItemType, myItemMenu);
             item->setBrush(myItemColor);
-            addItem(item);
-            item->setPos(mouseEvent->scenePos());
+//            addItem(item);
+//            item->setPos(mouseEvent->scenePos());
             emit itemInserted(item);
+            textItem = new DiagramTextItem(DiagramTextItem::Class,myItemMenu);
+            textItem->setFont(myFont);
+
+            textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
+            textItem->setZValue(1000.0);
+            connect(textItem, SIGNAL(lostFocus(DiagramTextItem*)),
+                    this, SLOT(editorLostFocus(DiagramTextItem*)));
+            connect(textItem, SIGNAL(selectedChange(QGraphicsItem*)),
+                    this, SIGNAL(itemSelected(QGraphicsItem*)));
+            addItem(textItem);
+            textItem->setDefaultTextColor(myTextColor);
+            textItem->setPos(mouseEvent->scenePos());
+//            item->setParentItem(textItem);
+//            addItem(item);
+//            emit textInserted(textItem);
+//            group->addToGroup(textItem);
+//            group->addToGroup(item);
+//            group->setHandlesChildEvents(false);
+//            group->setFlag(QGraphicsItem::ItemIsMovable);
+//            addItem(group);
             break;
         case InsertLine:
             line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
@@ -103,7 +123,7 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             addItem(line);
             break;
         case InsertText:
-            textItem = new DiagramTextItem();
+            textItem = new DiagramTextItem(DiagramTextItem::Class,myItemMenu);
             textItem->setFont(myFont);
             textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
             textItem->setZValue(1000.0);
@@ -145,13 +165,13 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         delete line;
 
         if (startItems.count() > 0 && endItems.count() > 0 &&
-            startItems.first()->type() == DiagramItem::Type &&
-            endItems.first()->type() == DiagramItem::Type &&
+            startItems.first()->type() == DiagramTextItem::Type &&//
+            endItems.first()->type() == DiagramTextItem::Type &&//
             startItems.first() != endItems.first()) {
-            DiagramItem *startItem =
-                qgraphicsitem_cast<DiagramItem *>(startItems.first());
-            DiagramItem *endItem =
-                qgraphicsitem_cast<DiagramItem *>(endItems.first());
+            DiagramTextItem *startItem =
+                qgraphicsitem_cast<DiagramTextItem *>(startItems.first());
+            DiagramTextItem *endItem =
+                qgraphicsitem_cast<DiagramTextItem *>(endItems.first());
             Arrow *arrow = new Arrow(startItem, endItem);
             arrow->setColor(myLineColor);
             startItem->addArrow(arrow);
