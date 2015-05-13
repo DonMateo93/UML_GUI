@@ -1,7 +1,6 @@
 #include <QtGui>
 
 #include "diagramscene.h"
-#include "arrow.h"
 
 DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     : QGraphicsScene(parent)
@@ -9,6 +8,7 @@ DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
     myItemMenu = itemMenu;
     myMode = MoveItem;
     myItemType = DiagramItem::Class;
+    myArrowType = Arrow::Generalization;
     line = 0;
     textItem = 0;
     myItemColor = Qt::white;
@@ -68,6 +68,11 @@ void DiagramScene::setMode(Mode mode)
 void DiagramScene::setItemType(DiagramItem::DiagramType type)
 {
     myItemType = type;
+}
+
+void DiagramScene::setArrowType(Arrow::ArrowType type)
+{
+    myArrowType = type;
 }
 
 void DiagramScene::editorLostFocus(DiagramTextItem *item)
@@ -172,7 +177,7 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
                 qgraphicsitem_cast<DiagramTextItem *>(startItems.first());
             DiagramTextItem *endItem =
                 qgraphicsitem_cast<DiagramTextItem *>(endItems.first());
-            Arrow *arrow = new Arrow(startItem, endItem);
+            Arrow *arrow = new Arrow(startItem, endItem, myArrowType);
             arrow->setColor(myLineColor);
             startItem->addArrow(arrow);
             endItem->addArrow(arrow);

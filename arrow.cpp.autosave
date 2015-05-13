@@ -56,8 +56,6 @@ void Arrow::paintArrowHead(QPainter* painter)
     QLineF liniaOdleglosc(pPrzeciecia,line().p1());
     QPointF pDlaRombu = line().p1() - pPrzeciecia;
     pDlaRombu = line().p1() - 2*pDlaRombu;
-    //qreal odlegloscDlaRombu = liniaOdleglosc.length();
-    //QPointF pDlaRombu =line().p1() - QPointF(sin(angle)*odlegloscDlaRombu,cos(angle)*odlegloscDlaRombu);
 
     QBrush brusz;
     switch(myArrowType)

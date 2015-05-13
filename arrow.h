@@ -20,11 +20,21 @@ class Arrow : public QGraphicsLineItem
 public:
     enum { Type = UserType + 4 };
 
-    Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem, QGraphicsItem *parent = 0);
+    enum ArrowType
+    {
+        Generalization,
+        Dependency,
+        Composition,
+        Aggregation,
+        Association
+    };
+
+    Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem,ArrowType type, QGraphicsItem *parent = 0);
 
     int type() const { return Type; }
     QRectF boundingRect() const;
     QPainterPath shape() const;
+    void paintArrowHead(QPainter *painter);
     void setColor(const QColor &color) { myColor = color; }
     DiagramTextItem *startItem() const { return myStartItem; }
     DiagramTextItem *endItem() const { return myEndItem; }
@@ -38,6 +48,7 @@ protected:
 private:
     DiagramTextItem *myStartItem;
     DiagramTextItem *myEndItem;
+    ArrowType myArrowType;
     QColor myColor;
     QPolygonF arrowHead;
 };

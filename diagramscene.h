@@ -6,6 +6,7 @@
 #include <QGraphicsItemGroup>
 #include "diagramitem.h"
 #include "diagramtextitem.h"
+#include "arrow.h"
 
 class QGraphicsSceneMouseEvent;
 class QMenu;
@@ -39,6 +40,7 @@ public:
 public slots:
     void setMode(Mode mode);
     void setItemType(DiagramItem::DiagramType type);
+    void setArrowType(Arrow::ArrowType type);
     void editorLostFocus(DiagramTextItem *item);
 
 signals:
@@ -55,6 +57,7 @@ private:
     bool isItemChange(int type);
 
     DiagramItem::DiagramType myItemType;
+    Arrow::ArrowType myArrowType;
     QMenu *myItemMenu;
     Mode myMode;
     bool leftButtonDown;
