@@ -3,11 +3,12 @@
 #include "diagramtextitem.h"
 #include "diagramscene.h"
 
-DiagramTextItem::DiagramTextItem(DiagramTextType diagramType, QMenu *contextMenu, QGraphicsItem *parent)
+DiagramTextItem::DiagramTextItem(DiagramTextType diagramType, QGraphicsItem *parent)
     : QGraphicsTextItem(parent)
 {
     myDiagramType = diagramType;
-    myContextMenu = contextMenu;
+    //myContextMenu = contextMenu;
+    myContextMenu = NULL;
 
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -47,6 +48,11 @@ void DiagramTextItem::removeArrows()
 void DiagramTextItem::addArrow(Arrow *arrow)
 {
     arrows.append(arrow);
+}
+
+void DiagramTextItem::setMenu(QMenu *menu)
+{
+    myContextMenu = menu;
 }
 
 QString DiagramTextItem::textForButton()

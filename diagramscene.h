@@ -23,7 +23,7 @@ class DiagramScene : public QGraphicsScene
 public:
     enum Mode { InsertItem, InsertLine, InsertText, MoveItem };
 
-    DiagramScene(QMenu *itemMenu, QObject *parent = 0);
+    DiagramScene(QMenu *itemMenu,QMenu *atrOperMenu,QMenu *atrMenu, QObject *parent = 0);
     QFont font() const
         { return myFont; }
     QColor textColor() const
@@ -40,6 +40,7 @@ public:
 public slots:
     void setMode(Mode mode);
     void setItemType(DiagramItem::DiagramType type);
+    void setTextItemType(DiagramTextItem::DiagramTextType type);
     void setArrowType(Arrow::ArrowType type);
     void editorLostFocus(DiagramTextItem *item);
 
@@ -57,8 +58,11 @@ private:
     bool isItemChange(int type);
 
     DiagramItem::DiagramType myItemType;
+    DiagramTextItem::DiagramTextType myTextItemType;
     Arrow::ArrowType myArrowType;
     QMenu *myItemMenu;
+    QMenu *atributeOperationMenu;
+    QMenu *atributeMenu;
     Mode myMode;
     bool leftButtonDown;
     QPointF startPoint;

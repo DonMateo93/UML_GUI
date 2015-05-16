@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QGraphicsView>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "diagramitem.h"
@@ -18,7 +19,7 @@ MainWindow::MainWindow()
     createToolBox();
     createMenus();
 
-    scene = new DiagramScene(itemMenu, this);
+    scene = new DiagramScene(itemMenu,AtributeOperationContextMenu,AtributeContextMenu, this);
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
     connect(scene, SIGNAL(itemInserted(DiagramItem*)),
             this, SLOT(itemInserted(DiagramItem*)));
@@ -69,24 +70,28 @@ void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
 }
 
 void MainWindow::buttonGroupClicked(int id)
-{//Tu wywalić diagramitem(sprawdzić)
+{
     QList<QAbstractButton *> buttons = buttonGroup->buttons();
-    foreach (QAbstractButton *button, buttons) {
-    if (buttonGroup->button(id) != button)
-        button->setChecked(false);
+
+    foreach (QAbstractButton *button, buttons)
+    {
+        if (buttonGroup->button(id) != button)
+            button->setChecked(false);
     }
-    if (id == InsertTextButton) {
-        scene->setMode(DiagramScene::InsertText);
-    } else {
-        scene->setItemType(DiagramItem::DiagramType(id));
-        scene->setMode(DiagramScene::InsertItem);
-    }
+
+    //W razie problemu wkleić kod z GitHuba
+
+    scene->setTextItemType(DiagramTextItem::DiagramTextType(id));
+    scene->setMode(DiagramScene::InsertText);//Gdyby były problemy zamienic na insertItem
+
 }
 
 void MainWindow::deleteItem()
 {
-    foreach (QGraphicsItem *item, scene->selectedItems()) {
-        if (item->type() == Arrow::Type) {
+    foreach (QGraphicsItem *item, scene->selectedItems())
+    {
+        if (item->type() == Arrow::Type)
+        {
             scene->removeItem(item);
             Arrow *arrow = qgraphicsitem_cast<Arrow *>(item);
             arrow->startItem()->removeArrow(arrow);
@@ -95,13 +100,64 @@ void MainWindow::deleteItem()
         }
     }
 
-    foreach (QGraphicsItem *item, scene->selectedItems()) {
-         if (item->type() == DiagramItem::Type) {
+    foreach (QGraphicsItem *item, scene->selectedItems())
+    {
+         if (item->type() == DiagramItem::Type)
+         {
              qgraphicsitem_cast<DiagramItem *>(item)->removeArrows();
          }
          scene->removeItem(item);
          delete item;
-     }
+    }
+}
+
+void MainWindow::addAttribute()
+{
+    if (scene->selectedItems().isEmpty())
+        return;
+
+    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
+
+    if(selectedItems.size() != 1)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Musi być wybrany tylko jeden element");
+        msgBox.exec();
+    }
+
+    QMessageBox msgBox;
+    msgBox.setText("Chuj");
+    msgBox.exec();
+}
+
+void MainWindow::addOperation()
+{
+    if (scene->selectedItems().isEmpty())
+        return;
+
+    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
+
+    if(selectedItems.size() != 1)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Musi być wybrany tylko jeden element");
+        msgBox.exec();
+    }
+}
+
+void MainWindow::setProperties()
+{
+    if (scene->selectedItems().isEmpty())
+        return;
+
+    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
+
+    if(selectedItems.size() != 1)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Musi być wybrany tylko jeden element");
+        msgBox.exec();
+    }
 }
 
 void MainWindow::pointerGroupClicked(int)
@@ -263,25 +319,6 @@ void MainWindow::createToolBox()
        layout->addWidget(createCellWidget(static_cast<DiagramItem::DiagramType>(fooInt)));
     }
 
-//    layout->addWidget(createCellWidget(DiagramItem::Step));
-//    layout->addWidget(createCellWidget(DiagramItem::Io));
-
-//    QToolButton *textButton = new QToolButton;
-//    textButton->setCheckable(true);
-//    buttonGroup->addButton(textButton, InsertTextButton);
-//    textButton->setIcon(QIcon(QPixmap(":/MojeSkarby/textpointer.png")
-//                        .scaled(30, 30)));
-//    textButton->setIconSize(QSize(50, 50));
-//    QGridLayout *textLayout = new QGridLayout;
-//    textLayout->addWidget(textButton, 0, 0, Qt::AlignHCenter);
-//    textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
-//    QWidget *textWidget = new QWidget;
-//    textWidget->setLayout(textLayout);
-//    layout->addWidget(textWidget);
-
-    //layout->setStretch(0,10);
-    //layout->setColumnStretch(2, 10);
-
     QWidget *itemWidget = new QWidget;
     itemWidget->setLayout(layout);
 
@@ -300,8 +337,6 @@ void MainWindow::createToolBox()
                 ":/MojeSkarby/UML_Arrows/Aggregation.png"));
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("Association"),
                 ":/MojeSkarby/UML_Arrows/Association.png"));
-
-    //backgroundLayout->setStretch(2,10);
 
     QWidget *backgroundWidget = new QWidget;
     backgroundWidget->setLayout(backgroundLayout);
@@ -367,6 +402,15 @@ void MainWindow::createActions()
     aboutAction->setShortcut(tr("Ctrl+B"));
     connect(aboutAction, SIGNAL(triggered()),
             this, SLOT(about()));
+
+    ProperitiesAction = new QAction(tr("Properities"),this);
+    connect(ProperitiesAction, SIGNAL(triggered()),this, SLOT(setProperties()));
+
+    AttributeAction = new QAction(tr("Add atribute"),this);
+    connect(AttributeAction, SIGNAL(triggered()),this, SLOT(addAttribute()));
+
+    OperationAction = new QAction(tr("Add operation"),this);
+    connect(OperationAction, SIGNAL(triggered()),this, SLOT(addOperation()));
 }
 
 void MainWindow::createMenus()
@@ -379,6 +423,23 @@ void MainWindow::createMenus()
     itemMenu->addSeparator();
     itemMenu->addAction(toFrontAction);
     itemMenu->addAction(sendBackAction);
+
+    AtributeOperationContextMenu = new QMenu();
+    AtributeOperationContextMenu->addAction(AttributeAction);
+    AtributeOperationContextMenu->addAction(OperationAction);
+    AtributeOperationContextMenu->addAction(ProperitiesAction);
+    AtributeOperationContextMenu->addSeparator();
+    AtributeOperationContextMenu->addAction(deleteAction);
+    AtributeOperationContextMenu->addAction(toFrontAction);
+    AtributeOperationContextMenu->addAction(sendBackAction);
+
+    AtributeContextMenu = new QMenu();
+    AtributeContextMenu->addAction(AttributeAction);
+    AtributeContextMenu->addAction(ProperitiesAction);
+    AtributeContextMenu->addSeparator();
+    AtributeContextMenu->addAction(deleteAction);
+    AtributeContextMenu->addAction(toFrontAction);
+    AtributeContextMenu->addAction(sendBackAction);
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);

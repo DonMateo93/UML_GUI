@@ -2,10 +2,12 @@
 
 #include "diagramscene.h"
 
-DiagramScene::DiagramScene(QMenu *itemMenu, QObject *parent)
+DiagramScene::DiagramScene(QMenu *itemMenu, QMenu *atrOperMenu, QMenu *atrMenu, QObject *parent)
     : QGraphicsScene(parent)
 {
     myItemMenu = itemMenu;
+    atributeMenu = atrMenu;
+    atributeOperationMenu = atrOperMenu;
     myMode = MoveItem;
     myItemType = DiagramItem::Class;
     myArrowType = Arrow::Generalization;
@@ -70,6 +72,11 @@ void DiagramScene::setItemType(DiagramItem::DiagramType type)
     myItemType = type;
 }
 
+void DiagramScene::setTextItemType(DiagramTextItem::DiagramTextType type)
+{
+    myTextItemType = type;
+}
+
 void DiagramScene::setArrowType(Arrow::ArrowType type)
 {
     myArrowType = type;
@@ -92,35 +99,11 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
     if (mouseEvent->button() != Qt::LeftButton)
         return;
 
-    DiagramItem *item;
-    switch (myMode) {
+    //DiagramItem *item;
+    switch (myMode)
+    {
         case InsertItem:
-            item = new DiagramItem(myItemType, myItemMenu);
-            item->setBrush(myItemColor);
-//            addItem(item);
-//            item->setPos(mouseEvent->scenePos());
-            emit itemInserted(item);
-            textItem = new DiagramTextItem(DiagramTextItem::Class,myItemMenu);
-            textItem->setFont(myFont);
 
-            textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
-            textItem->setZValue(1000.0);
-            connect(textItem, SIGNAL(lostFocus(DiagramTextItem*)),
-                    this, SLOT(editorLostFocus(DiagramTextItem*)));
-            connect(textItem, SIGNAL(selectedChange(QGraphicsItem*)),
-                    this, SIGNAL(itemSelected(QGraphicsItem*)));
-            addItem(textItem);
-            textItem->setDefaultTextColor(myTextColor);
-            textItem->setPos(mouseEvent->scenePos());
-//            item->setParentItem(textItem);
-//            addItem(item);
-//            emit textInserted(textItem);
-//            group->addToGroup(textItem);
-//            group->addToGroup(item);
-//            group->setHandlesChildEvents(false);
-//            group->setFlag(QGraphicsItem::ItemIsMovable);
-//            addItem(group);
-            break;
         case InsertLine:
             line = new QGraphicsLineItem(QLineF(mouseEvent->scenePos(),
                                         mouseEvent->scenePos()));
@@ -128,7 +111,13 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             addItem(line);
             break;
         case InsertText:
-            textItem = new DiagramTextItem(DiagramTextItem::Class,myItemMenu);
+            textItem = new DiagramTextItem(DiagramTextItem::Class);
+
+            if(myTextItemType == DiagramTextItem::Union || myTextItemType == DiagramTextItem::Enum)
+                textItem->setMenu(atributeMenu);
+            else
+                textItem->setMenu(atributeOperationMenu);
+
             textItem->setFont(myFont);
             textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
             textItem->setZValue(1000.0);

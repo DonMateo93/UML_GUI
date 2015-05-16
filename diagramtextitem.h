@@ -26,7 +26,7 @@ public:
     enum { Type = UserType + 3 };
     enum DiagramTextType {Class, Struct, Namespace, Enum, Union};
 
-    DiagramTextItem(DiagramTextType diagramType, QMenu *contextMenu, QGraphicsItem *parent = 0);
+    DiagramTextItem(DiagramTextType diagramType, QGraphicsItem *parent = 0);
 
     int type() const{ return Type; }
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
@@ -34,6 +34,7 @@ public:
     void removeArrow(Arrow *arrow);
     void removeArrows();
     void addArrow(Arrow *arrow);
+    void setMenu(QMenu *menu);
     DiagramTextType diagramType() const { return myDiagramType; }
     QString textForButton();
 

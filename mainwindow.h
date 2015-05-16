@@ -39,6 +39,9 @@ private slots:
     void backgroundButtonGroupClicked(QAbstractButton *button);
     void buttonGroupClicked(int id);
     void deleteItem();
+    void addAttribute();
+    void addOperation();
+    void setProperties();
     void pointerGroupClicked(int id);
     void bringToFront();
     void sendToBack();
@@ -75,6 +78,9 @@ private:
     QAction *exitAction;
     QAction *addAction;
     QAction *deleteAction;
+    QAction *AttributeAction;
+    QAction *OperationAction;
+    QAction *ProperitiesAction;
 
     QAction *toFrontAction;
     QAction *sendBackAction;
@@ -83,6 +89,8 @@ private:
     QMenu *fileMenu;
     QMenu *itemMenu;
     QMenu *aboutMenu;
+    QMenu *AtributeOperationContextMenu;
+    QMenu *AtributeContextMenu;
 
     QToolBar *textToolBar;
     QToolBar *editToolBar;
