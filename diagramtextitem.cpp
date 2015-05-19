@@ -10,9 +10,33 @@ DiagramTextItem::DiagramTextItem(DiagramTextType diagramType, QGraphicsItem *par
     //myContextMenu = contextMenu;
     myContextMenu = NULL;
 
+    switch(myDiagramType)
+    {
+    case Class:
+        element = new Klasa();
+        break;
+    case Struct:
+        element = new Struktura();
+        break;
+    case Namespace:
+        element = new PrzestrzenNazw();
+        break;
+    case Enum:
+        element = new Wyliczenie();
+        break;
+    case Union:
+        element = new Unia();
+        break;
+    }
+
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+}
+
+DiagramTextItem::~DiagramTextItem()
+{
+    delete element;
 }
 
 void DiagramTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -79,6 +103,11 @@ QString DiagramTextItem::textForButton()
     }
 
     return Product;
+}
+
+Element *DiagramTextItem::getElementAdress()
+{
+    return element;
 }
 
 QVariant DiagramTextItem::itemChange(GraphicsItemChange change,

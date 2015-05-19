@@ -111,7 +111,7 @@ void DiagramScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
             addItem(line);
             break;
         case InsertText:
-            textItem = new DiagramTextItem(DiagramTextItem::Class);
+            textItem = new DiagramTextItem(myTextItemType);
 
             if(myTextItemType == DiagramTextItem::Union || myTextItemType == DiagramTextItem::Enum)
                 textItem->setMenu(atributeMenu);

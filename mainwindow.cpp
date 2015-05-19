@@ -148,7 +148,7 @@ void MainWindow::addOperation()
 }
 
 void MainWindow::setProperties()
-{
+{   
     if (scene->selectedItems().isEmpty())
         return;
 
@@ -159,10 +159,22 @@ void MainWindow::setProperties()
         QMessageBox msgBox;
         msgBox.setText("Musi być wybrany tylko jeden element");
         msgBox.exec();
+        return;
     }
 
-    PropertiesDialog propDialog(PropertiesDialog::Klasa);
-    propDialog.exec();
+    DiagramTextItem* item;
+    item = dynamic_cast<DiagramTextItem*>(selectedItems.at(0));
+
+    if(item != NULL)
+    {
+        PropertiesDialog propDialog(item);
+        propDialog.exec();
+    }else
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Błąd, mainwindow.cpp, funkcjaSetProperties");
+        msgBox.exec();
+    }
 }
 
 void MainWindow::pointerGroupClicked(int)

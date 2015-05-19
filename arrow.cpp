@@ -12,13 +12,37 @@ Arrow::Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem, ArrowType typ
     myStartItem = startItem;
     myEndItem = endItem;
     myArrowType = type;
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
     myColor = Qt::black;
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+    switch(type)
+    {
+    case Generalization:
+        relacja = new Rel::Generalization(startItem->getElementAdress(),endItem->getElementAdress());
+        break;
+    case Dependency:
+        relacja = new Rel::Dependency(startItem->getElementAdress(),endItem->getElementAdress());
+        break;
+    case Composition:
+        relacja = new Rel::Composition(startItem->getElementAdress(),endItem->getElementAdress());
+        break;
+    case Aggregation:
+        relacja = new Rel::Aggregation(startItem->getElementAdress(),endItem->getElementAdress());
+        break;
+    case Association:
+        relacja = new Rel::Association(startItem->getElementAdress(),endItem->getElementAdress());
+        break;
+    }
 
     if(myArrowType == Dependency)
         setPen(QPen(myColor, 2, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin));
     else
         setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+}
+
+Arrow::~Arrow()
+{
+    delete relacja;
 }
 
 QRectF Arrow::boundingRect() const

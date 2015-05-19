@@ -31,6 +31,7 @@ public:
     };
 
     Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem,ArrowType type, QGraphicsItem *parent = 0);
+    ~Arrow();
 
     int type() const { return Type; }
     QRectF boundingRect() const;
@@ -47,7 +48,7 @@ protected:
                QWidget *widget = 0);
 
 private:
-    Relacja* relacja;
+    Rel::Relacja* relacja;
     DiagramTextItem *myStartItem;
     DiagramTextItem *myEndItem;
     ArrowType myArrowType;
