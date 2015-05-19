@@ -125,9 +125,8 @@ void MainWindow::addAttribute()
         msgBox.exec();
     }
 
-    QMessageBox msgBox;
-    msgBox.setText("Chuj");
-    msgBox.exec();
+    AtrybutDialog dialog;
+    dialog.exec();
 }
 
 void MainWindow::addOperation()
@@ -143,6 +142,9 @@ void MainWindow::addOperation()
         msgBox.setText("Musi być wybrany tylko jeden element");
         msgBox.exec();
     }
+
+    OperacjaDialog operacjaDialog;
+    operacjaDialog.exec();
 }
 
 void MainWindow::setProperties()
@@ -158,6 +160,9 @@ void MainWindow::setProperties()
         msgBox.setText("Musi być wybrany tylko jeden element");
         msgBox.exec();
     }
+
+    PropertiesDialog propDialog(PropertiesDialog::Klasa);
+    propDialog.exec();
 }
 
 void MainWindow::pointerGroupClicked(int)

@@ -12,6 +12,9 @@
 #include <QMenuBar>
 #include <QToolBar>
 #include "diagramitem.h"
+#include "atrybutdialog.h"
+#include "operacjadialog.h"
+#include "propertiesdialog.h"
 
 class DiagramScene;
 

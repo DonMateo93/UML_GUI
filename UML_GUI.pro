@@ -17,15 +17,22 @@ SOURCES += main.cpp\
     diagramscene.cpp \
     arrow.cpp \
     diagramitem.cpp \
-    diagramtextitem.cpp
+    diagramtextitem.cpp \
+    atrybutdialog.cpp \
+    operacjadialog.cpp \
+    propertiesdialog.cpp
 
 HEADERS  += mainwindow.h \
     diagramscene.h \
     arrow.h \
     diagramitem.h \
-    diagramtextitem.h
+    diagramtextitem.h \
+    atrybutdialog.h \
+    operacjadialog.h \
+    propertiesdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    atrybutdialog.ui
 
 RESOURCES += \
     mojeres.qrc
