@@ -6,6 +6,7 @@
 #include <QGraphicsItem>
 #include "diagramitem.h"
 #include "diagramtextitem.h"
+#include "relacja.h"
 
 class QGraphicsPolygonItem;
 class QGraphicsLineItem;
@@ -46,6 +47,7 @@ protected:
                QWidget *widget = 0);
 
 private:
+    Relacja* relacja;
     DiagramTextItem *myStartItem;
     DiagramTextItem *myEndItem;
     ArrowType myArrowType;

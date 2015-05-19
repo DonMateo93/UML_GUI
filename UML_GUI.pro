@@ -20,7 +20,10 @@ SOURCES += main.cpp\
     diagramtextitem.cpp \
     atrybutdialog.cpp \
     operacjadialog.cpp \
-    propertiesdialog.cpp
+    propertiesdialog.cpp \
+    element.cpp \
+    koder.cpp \
+    relacja.cpp
 
 HEADERS  += mainwindow.h \
     diagramscene.h \
@@ -29,7 +32,10 @@ HEADERS  += mainwindow.h \
     diagramtextitem.h \
     atrybutdialog.h \
     operacjadialog.h \
-    propertiesdialog.h
+    propertiesdialog.h \
+    element.h \
+    koder.h \
+    relacja.h
 
 FORMS    += mainwindow.ui \
     atrybutdialog.ui

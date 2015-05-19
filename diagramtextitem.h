@@ -11,6 +11,7 @@
 #include <QList>
 #include <QGraphicsSceneContextMenuEvent>
 #include "arrow.h"
+#include "element.h"
 
 
 class QFocusEvent;
@@ -50,6 +51,7 @@ protected:
 
 private:
     DiagramTextType myDiagramType;
+    Element* element;
     QMenu *myContextMenu;
     QList<Arrow *> arrows;
 };
