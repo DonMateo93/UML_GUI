@@ -346,27 +346,31 @@ void MainWindow::about()
 void MainWindow::codeGenHandle()
 {
     QString filePath = QFileDialog::getSaveFileName(this,tr("utworzPlik"),"C://","Plik nagłówkowy (*.h)");
-    QList<QGraphicsItem*> itemy = scene->items();
-    Element* element;
-    Rel::Relacja* relacja;
-    Koder* kod = new KoderCpp;
-
-    for(int i = 0; i < itemy.size(); i++)
+    if(filePath != "")
     {
-        if(dynamic_cast<DiagramTextItem*>(itemy.at(i)))
-        {
-            element = (dynamic_cast<DiagramTextItem*>(itemy.at(i)))->getElementAdress();
-            kod->dodajElementDoListy(element);
-        }else if(dynamic_cast<Arrow*>(itemy.at(i)))
-        {
-            relacja = (dynamic_cast<Arrow*>(itemy.at(i)))->getRelacjaAdres();
-            kod->dodajRelacje(relacja);
-        }
-    }
+        QList<QGraphicsItem*> itemy = scene->items();
+        Element* element;
+        Rel::Relacja* relacja;
+        Koder* kod = new KoderCpp;
 
-    kod->wprowadzDoPlikuWszystkieElementy(filePath);
-    kod->wprowadzDoPlikuWszyskieRelacje(filePath);
-    kod->poprawKodWPliku(filePath);
+        for(int i = 0; i < itemy.size(); i++)
+        {
+            if(dynamic_cast<DiagramTextItem*>(itemy.at(i)))
+            {
+                element = (dynamic_cast<DiagramTextItem*>(itemy.at(i)))->getElementAdress();
+                element->setNazwa(dynamic_cast<DiagramTextItem*>(itemy.at(i))->toPlainText());
+                kod->dodajElementDoListy(element);
+            }else if(dynamic_cast<Arrow*>(itemy.at(i)))
+            {
+                relacja = (dynamic_cast<Arrow*>(itemy.at(i)))->getRelacjaAdres();
+                kod->dodajRelacje(relacja);
+            }
+        }
+
+        kod->wprowadzDoPlikuWszystkieElementy(filePath);
+        kod->wprowadzDoPlikuWszyskieRelacje(filePath);
+        kod->poprawKodWPliku(filePath);
+    }
 }
 
 void MainWindow::createToolBox()
