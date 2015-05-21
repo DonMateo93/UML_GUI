@@ -19,7 +19,7 @@ MainWindow::MainWindow()
     createToolBox();
     createMenus();
 
-    scene = new DiagramScene(itemMenu,AtributeOperationContextMenu,AtributeContextMenu, this);
+    scene = new DiagramScene(itemMenu,AtributeOperationContextMenu,AtributeContextMenu,arrowMenu, this);
     scene->setSceneRect(QRectF(0, 0, 5000, 5000));
     connect(scene, SIGNAL(itemInserted(DiagramItem*)),
             this, SLOT(itemInserted(DiagramItem*)));
@@ -191,6 +191,36 @@ void MainWindow::setProperties()
     {
         PropertiesDialog propDialog(item);
         propDialog.exec();
+    }else
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Błąd, mainwindow.cpp, funkcjaSetProperties");
+        msgBox.exec();
+    }
+}
+
+void MainWindow::setArrowProperties()
+{
+    if (scene->selectedItems().isEmpty())
+        return;
+
+    QList<QGraphicsItem *> selectedItems = scene->selectedItems();
+
+    if(selectedItems.size() != 1)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Musi być wybrany tylko jeden element");
+        msgBox.exec();
+        return;
+    }
+
+    Arrow* item;
+    item = dynamic_cast<Arrow*>(selectedItems.at(0));
+
+    if(item != NULL)
+    {
+        ArrowPropertiesDiaglog propDiaglog(item->getRelacjaAdres());
+        propDiaglog.exec();
     }else
     {
         QMessageBox msgBox;
@@ -479,6 +509,9 @@ void MainWindow::createActions()
 
     OperationAction = new QAction(tr("Add operation"),this);
     connect(OperationAction, SIGNAL(triggered()),this, SLOT(addOperation()));
+
+    ArrowPropertiesAction = new QAction(tr("Properties"),this);
+    connect(ArrowPropertiesAction,SIGNAL(triggered()),this,SLOT(setArrowProperties()));
 }
 
 void MainWindow::createMenus()
@@ -508,6 +541,13 @@ void MainWindow::createMenus()
     AtributeContextMenu->addAction(deleteAction);
     AtributeContextMenu->addAction(toFrontAction);
     AtributeContextMenu->addAction(sendBackAction);
+
+    arrowMenu = new QMenu();
+    arrowMenu->addAction(ArrowPropertiesAction);
+    arrowMenu->addSeparator();
+    arrowMenu->addAction(deleteAction);
+    arrowMenu->addAction(toFrontAction);
+    arrowMenu->addAction(sendBackAction);
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);

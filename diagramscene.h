@@ -23,7 +23,7 @@ class DiagramScene : public QGraphicsScene
 public:
     enum Mode { InsertItem, InsertLine, InsertText, MoveItem };
 
-    DiagramScene(QMenu *itemMenu,QMenu *atrOperMenu,QMenu *atrMenu, QObject *parent = 0);
+    DiagramScene(QMenu *itemMenu,QMenu *atrOperMenu,QMenu *atrMenu,QMenu* arrMenu, QObject *parent = 0);
     QFont font() const
         { return myFont; }
     QColor textColor() const
@@ -63,6 +63,7 @@ private:
     QMenu *myItemMenu;
     QMenu *atributeOperationMenu;
     QMenu *atributeMenu;
+    QMenu *arrowMenu;
     Mode myMode;
     bool leftButtonDown;
     QPointF startPoint;

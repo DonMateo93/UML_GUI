@@ -6,9 +6,10 @@
 
 const qreal Pi = 3.14;
 
-Arrow::Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem, ArrowType type, QGraphicsItem *parent)
+Arrow::Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem, ArrowType type,QMenu* menu,QGraphicsItem *parent)
     : QGraphicsLineItem(parent)
 {
+    myContextMenu = menu;
     myStartItem = startItem;
     myEndItem = endItem;
     myArrowType = type;
@@ -298,6 +299,13 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)
         painter->drawLine(myLine);
         myLine.translate(0,-8.0);
         painter->drawLine(myLine);
-    }
+        }
+}
+
+void Arrow::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    scene()->clearSelection();
+    setSelected(true);
+    myContextMenu->exec(event->screenPos());
 }
 

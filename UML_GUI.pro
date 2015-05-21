@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     propertiesdialog.cpp \
     element.cpp \
     koder.cpp \
-    relacja.cpp
+    relacja.cpp \
+    arrowpropertiesdiaglog.cpp
 
 HEADERS  += mainwindow.h \
     diagramscene.h \
@@ -35,7 +36,8 @@ HEADERS  += mainwindow.h \
     propertiesdialog.h \
     element.h \
     koder.h \
-    relacja.h
+    relacja.h \
+    arrowpropertiesdiaglog.h
 
 FORMS    += mainwindow.ui \
     atrybutdialog.ui

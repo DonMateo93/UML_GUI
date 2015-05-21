@@ -7,6 +7,21 @@ Relacja::~Relacja()
 
 }
 
+QString Relacja::getKontener()
+{
+    return kontener;
+}
+
+void Relacja::setKontener(QString konte)
+{
+    kontener = konte;
+}
+
+void Relacja::setKomentarz(QString koment)
+{
+    komentarz = koment;
+}
+
 bool Relacja::czyZgadzaSieAdresZElementemDrugim(Element* element)
 {
     if(element == Drugi)
@@ -87,4 +102,9 @@ bool Relacja::czyDrugiToStruktura()
     {
         return false;
     }
+}
+
+void Relacja::setWidocznosc(Widocznosc wid)
+{
+    widocznosc = wid;
 }

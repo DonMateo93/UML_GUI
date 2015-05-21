@@ -14,6 +14,13 @@ QString KoderCpp::dekodujAtrybut(const Atrybut& atrybut)
     QStringList list = zakodowany.split(" ", QString::SkipEmptyParts);
     QString zdekodowany = "";
     QString str;
+    QString kontener;
+
+    if("" != atrybut.getKontener()){
+        kontener = atrybut.getKontener();
+    }else {
+        kontener = RodzajStosowanegoKontenera;
+    }
     bool ok = false;
     bool ok2 = false;
 
@@ -53,9 +60,9 @@ QString KoderCpp::dekodujAtrybut(const Atrybut& atrybut)
             if(list[ind1+2] == "1..*" || list[ind1+2] == "0..1" || list[ind1+2] == "0..*" || ok)
             {
                 if(list[ind1+2] == "1..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.indexOf(":")+1] + "> ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.indexOf(":")+1] + "> ";
                 else if(list[ind1+2] == "0..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.indexOf(":")+1] + "> ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.indexOf(":")+1] + "> ";
                 else if(ok2)
                 {
                     zdekodowany = zdekodowany + list[list.indexOf(":")+1] + "[" + list[ind1+2] + "] ";
@@ -99,6 +106,14 @@ QString KoderCpp::dekodujOperacje(const Operacja& operacja, QString przedrostekD
     QString zakodowany;
     QString zdekodowany = "";
     zakodowany << operacja;
+
+    QString kontener;
+    if(operacja.getKontener() != ""){
+        kontener = operacja.getKontener();
+    }else {
+        kontener = RodzajStosowanegoKontenera;
+    }
+
     if(zakodowany != "")
     {
         QStringList list = zakodowany.split(" ", QString::SkipEmptyParts);
@@ -149,9 +164,9 @@ QString KoderCpp::dekodujOperacje(const Operacja& operacja, QString przedrostekD
                 else
                     pomoCh = "";
                 if(list[ind1+2] == "1..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
                 else if(list[ind1+2] == "0..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
                 else if(ok2)
                 {
                     zdekodowany = zdekodowany + list[list.lastIndexOf(":")+1] + "[" + list[ind1+2] + "] ";
@@ -214,6 +229,14 @@ QString KoderCpp::dekodujOperacje(const QString& operacja, QString przedrostekDo
 {
     QString zakodowany = "";
     QString zdekodowany = "";
+
+    QString kontener;
+    if(operacja.getKontener() != ""){
+        kontener = operacja.getKontener();
+    }else {
+        kontener = RodzajStosowanegoKontenera;
+    }
+
     if(operacja != "")
     {
         zakodowany = operacja;
@@ -264,9 +287,9 @@ QString KoderCpp::dekodujOperacje(const QString& operacja, QString przedrostekDo
                 else
                     pomoCh = "";
                 if(list[ind1+2] == "1..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
                 else if(list[ind1+2] == "0..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.lastIndexOf(":")+1] + ">" + pomoCh + " ";
                 else if(ok2)
                 {
                     zdekodowany = zdekodowany + list[list.lastIndexOf(":")+1] + "[" + list[ind1+2] + "] ";
@@ -334,6 +357,13 @@ QString KoderCpp::dekodujAtrybut(const QString& atrybut)
     bool ok = false;
     bool ok2 = false;
 
+    QString kontener;
+    if(atrybut.getKontener() != ""){
+        kontener = atrybut.getKontener();
+    }else {
+        kontener = RodzajStosowanegoKontenera;
+    }
+
     if(zakodowany != "")
     {
         //DO WYWALENIA
@@ -370,9 +400,9 @@ QString KoderCpp::dekodujAtrybut(const QString& atrybut)
             if(list[ind1+2] == "1..*" || list[ind1+2] == "0..1" || list[ind1+2] == "0..*" || ok)
             {
                 if(list[ind1+2] == "1..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.indexOf(":")+1] + "> ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.indexOf(":")+1] + "> ";
                 else if(list[ind1+2] == "0..*")
-                    zdekodowany = zdekodowany + "std::deque<" + list[list.indexOf(":")+1] + "> ";
+                    zdekodowany = zdekodowany + kontener + "<" + list[list.indexOf(":")+1] + "> ";
                 else if(ok2)
                 {
                     zdekodowany = zdekodowany + list[list.indexOf(":")+1] + "[" + list[ind1+2] + "] ";
@@ -1536,13 +1566,20 @@ void KoderCpp::wprowadzDoPlikuAgregacjeLubKompozycje(QString FilePathAndName, Re
     QString szukana = "";
     QString wpisywana = "";
 
+    QString kontener;
+    if(relacja->getKontener() != ""){
+        kontener = relacja->getKontener();
+    }else {
+        kontener = RodzajStosowanegoKontenera;
+    }
+
     if((dynamic_cast<Aggregation*>(relacja))->getKrotnosc() == Jeden)
     {
         wpisywana = relacja->dajAdresDrugi()->getNazwa() + " element" + QString::number(ileObiektow++) + ";";
     }
     else if((dynamic_cast<Aggregation*>(relacja))->getKrotnosc() == JedenLubX || (dynamic_cast<Association*>(relacja))->getKrotnosc() == ZeroLub1 || (dynamic_cast<Association*>(relacja))->getKrotnosc() == ZeroLubX)
     {
-        wpisywana = RodzajStosowanegoKontenera + "<" + relacja->dajAdresDrugi()->getNazwa() + ">" + " element" + QString::number(ileObiektow++) + ";";
+        wpisywana = kontener + "<" + relacja->dajAdresDrugi()->getNazwa() + ">" + " element" + QString::number(ileObiektow++) + ";";
     }
     else if((dynamic_cast<Aggregation*>(relacja))->getKrotnosc() == N)
     {
@@ -1781,6 +1818,12 @@ void KoderCpp::wprowadzDoPlikuAgregacjeLubKompozycje(QString FilePathAndName, Re
 
 void KoderCpp::wprowadzDoPlikuAsocjacje(QString FilePathAndName, Relacja* relacja)
 {
+    QString kontener;
+    if(relacja->getKontener() != ""){
+        kontener = relacja->getKontener();
+    }else {
+        kontener = RodzajStosowanegoKontenera;
+    }
     if(relacja != NULL)
     {
         if(!dynamic_cast<PrzestrzenNazw*>(relacja->dajAdresDrugi()))
@@ -1797,7 +1840,7 @@ void KoderCpp::wprowadzDoPlikuAsocjacje(QString FilePathAndName, Relacja* relacj
             }
             else if((dynamic_cast<Association*>(relacja))->getKrotnosc() == JedenLubX || (dynamic_cast<Association*>(relacja))->getKrotnosc() == ZeroLub1 || (dynamic_cast<Association*>(relacja))->getKrotnosc() == ZeroLubX)
             {
-                wpisywana = RodzajStosowanegoKontenera + "<" + relacja->dajAdresDrugi()->getNazwa() + "*>" + " element" + QString::number(ileObiektow++) + ";";
+                wpisywana = kontener + "<" + relacja->dajAdresDrugi()->getNazwa() + "*>" + " element" + QString::number(ileObiektow++) + ";";
             }
             else if((dynamic_cast<Association*>(relacja))->getKrotnosc() == N)
             {
@@ -2090,7 +2133,228 @@ void KoderCpp::wprowadzDoPlikuGeneralizacje(QString FilePathAndName, Relacja* re
 
 void KoderCpp::wprowadzDoPlikuDependency(QString FilePathAndName, Relacja* relacja)
 {
+    if(relacja != NULL)
+    {
+        if(relacja->getKomentarz() == "friend")
+        {
+            if(!dynamic_cast<PrzestrzenNazw*>(relacja->dajAdresDrugi()) && !dynamic_cast<Wyliczenie*>(relacja->dajAdresDrugi()) && !dynamic_cast<Unia*>(relacja->dajAdresDrugi()))
+            {
+                QFile Naglowek(FilePathAndName);
+                QFile Pom("PlikPomocniczy.txt");
+                QString pomoc1 = "";
+                QString szukana = "";
+                QString wpisywana = "";
 
+                if(dynamic_cast<Klasa*>(relacja->dajAdresDrugi()))
+                {
+                    wpisywana = "friend class " + relacja->dajAdresDrugi()->getNazwa() + ";";
+                }else if(dynamic_cast<Struktura*>(relacja->dajAdresDrugi()))
+                {
+                    wpisywana = "friend struct " + relacja->dajAdresDrugi()->getNazwa() + ";";
+                }
+                if(wpisywana != "")
+                {
+                    if(dynamic_cast<Klasa*>(relacja->dajAdresPierwszy()))
+                    {
+                        szukana = "class " + relacja->dajAdresPierwszy()->getNazwa();
+                    }
+                    else if(dynamic_cast<Struktura*>(relacja->dajAdresPierwszy()))
+                    {
+                        szukana = "struct " + relacja->dajAdresPierwszy()->getNazwa();
+                    }
+                    else if(dynamic_cast<Unia*>(relacja->dajAdresPierwszy()))
+                    {
+                        szukana = "union " + relacja->dajAdresPierwszy()->getNazwa();
+                    }
+                    else if(dynamic_cast<PrzestrzenNazw*>(relacja->dajAdresPierwszy()))
+                    {
+                        szukana = "namespace " + relacja->dajAdresPierwszy()->getNazwa();
+                    }
+                    else if(dynamic_cast<Wyliczenie*>(relacja->dajAdresPierwszy()))
+                    {
+                        szukana = "enum " + relacja->dajAdresPierwszy()->getNazwa();
+                    }
+
+                    if(szukana != "")
+                    {
+                        if(Naglowek.open(QIODevice::Text | QIODevice::ReadOnly) && Pom.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
+                        {
+                            QTextStream str1(&Naglowek), str2(&Pom);
+                            pomoc1 = str1.readLine();
+                            while(!pomoc1.isNull())
+                            {
+                                str2 << pomoc1 << endl;
+                                if(pomoc1.contains(szukana))
+                                {
+                                    pomoc1 = str1.readLine();
+
+                                    if(pomoc1.contains("{"))
+                                    {
+                                        if(szukana.contains("class"))
+                                        {
+                                            if(relacja->getWidocznosc() == wPrivate)
+                                            {
+                                                str2 << pomoc1 << endl;
+                                                str2 << wpisywana << endl;
+                                            }
+                                            else if(relacja->getWidocznosc() == wPublic || relacja->getWidocznosc() == wProtected)
+                                            {
+                                                QString pomoc2 = "";
+                                                if(relacja->getWidocznosc() == wPublic)
+                                                    pomoc2 = "public";
+                                                else
+                                                    pomoc2 = "protected";
+
+                                                bool ok1 = false;
+                                                int wagaNawiasy = 0;
+                                                QStringList lista;
+                                                lista.clear();
+                                                do
+                                                {
+                                                    lista.push_back(pomoc1);
+
+                                                    //Pobieramy do buforowej listy dopoki nie pobierzemy calego ciala
+                                                    if(pomoc1.contains("{"))
+                                                    {
+                                                        wagaNawiasy++;
+                                                    }
+                                                    else if(pomoc1.contains("}"))
+                                                    {
+                                                        wagaNawiasy--;
+                                                    }
+
+                                                    if(pomoc1.contains(pomoc2))
+                                                    {
+                                                        lista.push_back(wpisywana);
+                                                        ok1 = true;
+                                                        break;
+                                                    }
+
+                                                    pomoc1 = str1.readLine();
+
+                                                }while(wagaNawiasy > 0);
+
+                                                if(!ok1)
+                                                {
+                                                    pomoc2 += ":";
+                                                    lista.insert(lista.size() - 1,pomoc2);
+                                                    lista.insert(lista.size() - 1, wpisywana);
+                                                    if(!pomoc1.isNull())
+                                                    {
+                                                        lista.push_back(pomoc1);
+                                                    }
+                                                }
+
+                                                QString sklej = lista.join('\n');
+                                                str2 << sklej << endl;
+                                            }
+                                        }
+                                        else if(szukana.contains("struct"))
+                                        {
+                                            if(relacja->getWidocznosc() == wPublic)
+                                            {
+                                                str2 << pomoc1 << endl;
+                                                str2 << wpisywana << endl;
+                                            }
+                                            else if(relacja->getWidocznosc() == wPrivate || relacja->getWidocznosc() == wProtected)
+                                            {
+                                                QString pomoc2 = "";
+                                                if(relacja->getWidocznosc() == wPublic)
+                                                    pomoc2 = "private";
+                                                else
+                                                    pomoc2 = "protected";
+
+                                                bool ok1 = false;
+                                                int wagaNawiasy = 0;
+                                                QStringList lista;
+                                                lista.clear();
+                                                do
+                                                {
+                                                    lista.push_back(pomoc1);
+
+                                                    //Pobieramy do buforowej listy dopoki nie pobierzemy calego ciala
+                                                    if(pomoc1.contains("{"))
+                                                    {
+                                                        wagaNawiasy++;
+                                                    }
+                                                    else if(pomoc1.contains("}"))
+                                                    {
+                                                        wagaNawiasy--;
+                                                    }
+
+                                                    if(pomoc1.contains(pomoc2))
+                                                    {
+                                                        lista.push_back(wpisywana);
+                                                        ok1 = true;
+                                                        break;
+                                                    }
+
+                                                    pomoc1 = str1.readLine();
+
+                                                }while(wagaNawiasy > 0);
+
+                                                if(!ok1)
+                                                {
+                                                    pomoc2 += ":";
+                                                    lista.insert(lista.size() - 1,pomoc2);
+                                                    lista.insert(lista.size() - 1, wpisywana);
+                                                    if(!pomoc1.isNull())
+                                                    {
+                                                        lista.push_back(pomoc1);
+                                                    }
+                                                }
+
+                                                QString sklej = lista.join('\n');
+                                                str2 << sklej << endl;
+                                            }
+                                        }  // W poniższych nie ma problemu prywatnosci wiec nie zastanawiając się wpisujemy na początek
+                                        else if(szukana.contains("enum") || szukana.contains("union") || szukana.contains("namespace"))
+                                        {
+                                            str2 << pomoc1 << endl;
+                                            str2 << wpisywana << endl;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(!pomoc1.isNull())
+                                            str2 << pomoc1 << endl;
+                                    }
+                                }
+                                pomoc1 = str1.readLine();
+                            }
+                        }
+                        else
+                        {
+                            //OBSŁUGA BŁĘDU = PROBLEM Z PLIKIEM
+                        }
+
+                        Naglowek.close();
+                        Pom.close();
+
+                        if(Naglowek.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate) && Pom.open(QIODevice::Text | QIODevice::ReadOnly))
+                        {
+                            QTextStream str1(&Naglowek), str2(&Pom);
+
+                            pomoc1 = str2.readLine();
+                            while(!pomoc1.isNull())
+                            {
+                                str1 << pomoc1 << endl;
+                                pomoc1 = str2.readLine();
+                            }
+
+                            Pom.close();
+                            Naglowek.close();
+                            Pom.remove();
+                        }
+                        else
+                        {
+                            //OBSŁUGA BŁĘDU = PROBLEM Z PLIKAMI
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 

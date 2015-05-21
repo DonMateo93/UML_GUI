@@ -14,6 +14,7 @@ protected:
     Element* Drugi;
     QString komentarz;
     Widocznosc widocznosc;
+    QString kontener;
 public:
 
     Relacja(Element* pierwszy, Element* drugi, Widocznosc wid= wPrivate, QString koment = ""):Pierwszy(pierwszy),Drugi(drugi),widocznosc(wid),komentarz(koment)
@@ -23,6 +24,10 @@ public:
     virtual void draw() = 0;
     QString getNameDrugi(){return Drugi->getNazwa();}
     QString getNamePierwszy(){return Pierwszy->getNazwa();}
+    QString getKomentarz(){return komentarz;}
+    QString getKontener();
+    void setKontener(QString konte);
+    void setKomentarz(QString koment);
     bool czyZgadzaSieAdresZElementemPierwszym(Element* element);
     bool czyZgadzaSieAdresZElementemDrugim(Element* element);
     bool czyPierwszyToPrzestrzen();
@@ -33,6 +38,7 @@ public:
     Element* dajAdresPierwszy(){return Pierwszy;}
     Element* dajAdresDrugi(){return Drugi;}
     Widocznosc getWidocznosc(){return widocznosc;}
+    void setWidocznosc(Widocznosc wid);
 };
 
 class Dependency: public Relacja
@@ -52,6 +58,8 @@ public:
     Composition(Element* pierwszy, Element* drugi, Widocznosc wid= wPrivate, QString koment = "",Krotnosc ile = Jeden, int ileTychN = 0):Relacja(pierwszy,drugi,wid,koment),Ile(ile),n(ileTychN)
     {}
     Krotnosc getKrotnosc(){return Ile;}
+    void setKrotnosc(Krotnosc krot){Ile = krot;}
+    void setIleTychN(int num){n = num;}
     int getIleTychN(){return n;}
     void draw(){}
 };
@@ -65,6 +73,8 @@ public:
     {}
     Krotnosc getKrotnosc(){return Ile;}
     int getIleTychN(){return n;}
+    void setKrotnosc(Krotnosc krot){Ile = krot;}
+    void setIleTychN(int num){n = num;}
     void draw(){}
 };
 
@@ -85,6 +95,8 @@ public:
     {}
     Krotnosc getKrotnosc(){return Ile;}
     int getIleTychN(){return n;}
+    void setKrotnosc(Krotnosc krot){Ile = krot;}
+    void setIleTychN(int num){n = num;}
     void draw(){}
 };
 

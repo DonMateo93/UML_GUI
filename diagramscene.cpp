@@ -2,9 +2,10 @@
 
 #include "diagramscene.h"
 
-DiagramScene::DiagramScene(QMenu *itemMenu, QMenu *atrOperMenu, QMenu *atrMenu, QObject *parent)
+DiagramScene::DiagramScene(QMenu *itemMenu, QMenu *atrOperMenu, QMenu *atrMenu, QMenu *arrMenu, QObject *parent)
     : QGraphicsScene(parent)
 {
+    arrowMenu = arrMenu;
     myItemMenu = itemMenu;
     atributeMenu = atrMenu;
     atributeOperationMenu = atrOperMenu;
@@ -166,7 +167,7 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
                 qgraphicsitem_cast<DiagramTextItem *>(startItems.first());
             DiagramTextItem *endItem =
                 qgraphicsitem_cast<DiagramTextItem *>(endItems.first());
-            Arrow *arrow = new Arrow(startItem, endItem, myArrowType);
+            Arrow *arrow = new Arrow(startItem, endItem, myArrowType,arrowMenu);
             arrow->setColor(myLineColor);
             startItem->addArrow(arrow);
             endItem->addArrow(arrow);

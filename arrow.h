@@ -30,7 +30,7 @@ public:
         Association
     };
 
-    Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem,ArrowType type, QGraphicsItem *parent = 0);
+    Arrow(DiagramTextItem *startItem, DiagramTextItem *endItem,ArrowType type,QMenu* menu, QGraphicsItem *parent = 0);
     ~Arrow();
 
     int type() const { return Type; }
@@ -45,8 +45,8 @@ public:
     Rel::Relacja *getRelacjaAdres();
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget = 0);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget = 0);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 private:
     Rel::Relacja* relacja;
@@ -55,6 +55,7 @@ private:
     ArrowType myArrowType;
     QColor myColor;
     QPolygonF arrowHead;
+    QMenu* myContextMenu;
 };
 
 #endif

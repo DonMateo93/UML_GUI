@@ -17,6 +17,7 @@
 #include "operacjadialog.h"
 #include "propertiesdialog.h"
 #include "koder.h"
+#include "arrowpropertiesdiaglog.h"
 
 class DiagramScene;
 
@@ -47,6 +48,7 @@ private slots:
     void addAttribute();
     void addOperation();
     void setProperties();
+    void setArrowProperties();
     void pointerGroupClicked(int id);
     void bringToFront();
     void sendToBack();
@@ -87,6 +89,7 @@ private:
     QAction *AttributeAction;
     QAction *OperationAction;
     QAction *ProperitiesAction;
+    QAction *ArrowPropertiesAction;
 
     QAction *toFrontAction;
     QAction *sendBackAction;
@@ -97,6 +100,7 @@ private:
     QMenu *aboutMenu;
     QMenu *AtributeOperationContextMenu;
     QMenu *AtributeContextMenu;
+    QMenu *arrowMenu;
 
     QToolBar *textToolBar;
     QToolBar *editToolBar;
