@@ -20,5 +20,7 @@
         <file>UML_Arrows/Composition.png</file>
         <file>UML_Arrows/Dependency.png</file>
         <file>UML_Arrows/Generalization.png</file>
+        <file>cpp.png</file>
+        <file>cpp2.png</file>
     </qresource>
 </RCC>

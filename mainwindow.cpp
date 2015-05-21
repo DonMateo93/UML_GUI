@@ -123,9 +123,19 @@ void MainWindow::addAttribute()
         QMessageBox msgBox;
         msgBox.setText("Musi być wybrany tylko jeden element");
         msgBox.exec();
+        return;
     }
 
-    AtrybutDialog dialog;
+    DiagramTextItem* textItem = dynamic_cast<DiagramTextItem*>(selectedItems.at(0));
+    if(textItem == NULL)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Wybrany element musi być prostokątem");
+        msgBox.exec();
+        return;
+    }
+
+    AtrybutDialog dialog(textItem->getElementAdress());
     dialog.exec();
 }
 
@@ -141,10 +151,22 @@ void MainWindow::addOperation()
         QMessageBox msgBox;
         msgBox.setText("Musi być wybrany tylko jeden element");
         msgBox.exec();
+
+        return;
     }
 
-    OperacjaDialog operacjaDialog;
-    operacjaDialog.exec();
+    if(dynamic_cast<DiagramTextItem*>(selectedItems.at(0)))
+    {
+        Element* element = dynamic_cast<DiagramTextItem*>(selectedItems.at(0))->getElementAdress();
+
+        OperacjaDialog operacjaDialog(element);
+        operacjaDialog.exec();
+    }else
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Nie wybrano elementu");
+        msgBox.exec();
+    }
 }
 
 void MainWindow::setProperties()
@@ -318,8 +340,33 @@ void MainWindow::itemSelected(QGraphicsItem *item)
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About Diagram Scene"),
-                       tr("The <b>Diagram Scene</b> example shows "
-                          "use of the graphics framework."));
+                       tr("Author: Mateusz Osypiński"));
+}
+
+void MainWindow::codeGenHandle()
+{
+    QString filePath = QFileDialog::getSaveFileName(this,tr("utworzPlik"),"C://","Plik nagłówkowy (*.h)");
+    QList<QGraphicsItem*> itemy = scene->items();
+    Element* element;
+    Rel::Relacja* relacja;
+    Koder* kod = new KoderCpp;
+
+    for(int i = 0; i < itemy.size(); i++)
+    {
+        if(dynamic_cast<DiagramTextItem*>(itemy.at(i)))
+        {
+            element = (dynamic_cast<DiagramTextItem*>(itemy.at(i)))->getElementAdress();
+            kod->dodajElementDoListy(element);
+        }else if(dynamic_cast<Arrow*>(itemy.at(i)))
+        {
+            relacja = (dynamic_cast<Arrow*>(itemy.at(i)))->getRelacjaAdres();
+            kod->dodajRelacje(relacja);
+        }
+    }
+
+    kod->wprowadzDoPlikuWszystkieElementy(filePath);
+    kod->wprowadzDoPlikuWszyskieRelacje(filePath);
+    kod->poprawKodWPliku(filePath);
 }
 
 void MainWindow::createToolBox()
@@ -552,6 +599,14 @@ void MainWindow::createToolbars()
     pointerToolbar->addWidget(pointerButton);
     pointerToolbar->addWidget(linePointerButton);
     pointerToolbar->addWidget(sceneScaleCombo);
+
+    cppButton = new QToolButton;
+    cppButton->setCheckable(true);
+    cppButton->setIcon(QIcon(":/MojeSkarby/cpp2.png"));
+    connect(cppButton,SIGNAL(clicked()),this,SLOT(codeGenHandle()));
+
+    GenToolbar = addToolBar(tr("Generate Code"));
+    GenToolbar->addWidget(cppButton);
 }
 
 QWidget *MainWindow::createBackgroundCellWidget(const QString &text,

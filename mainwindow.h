@@ -11,10 +11,12 @@
 #include <QMessageBox>
 #include <QMenuBar>
 #include <QToolBar>
+#include <QFileDialog>
 #include "diagramitem.h"
 #include "atrybutdialog.h"
 #include "operacjadialog.h"
 #include "propertiesdialog.h"
+#include "koder.h"
 
 class DiagramScene;
 
@@ -62,6 +64,7 @@ private slots:
     void handleFontChange();
     void itemSelected(QGraphicsItem *item);
     void about();
+    void codeGenHandle();
 
 private:
     void createToolBox();
@@ -99,6 +102,7 @@ private:
     QToolBar *editToolBar;
     QToolBar *colorToolBar;
     QToolBar *pointerToolbar;
+    QToolBar *GenToolbar;
 
     QComboBox *sceneScaleCombo;
     QComboBox *itemColorCombo;
@@ -113,6 +117,7 @@ private:
     QToolButton *fontColorToolButton;
     QToolButton *fillColorToolButton;
     QToolButton *lineColorToolButton;
+    QToolButton *cppButton;
     QAction *boldAction;
     QAction *underlineAction;
     QAction *italicAction;

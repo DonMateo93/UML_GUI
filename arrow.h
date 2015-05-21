@@ -42,6 +42,7 @@ public:
     DiagramTextItem *endItem() const { return myEndItem; }
     void pozycjaPrzesunietaDoSrodka(QPoint& startElem, QPoint& endElem);
     void updatePosition();
+    Rel::Relacja *getRelacjaAdres();
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,

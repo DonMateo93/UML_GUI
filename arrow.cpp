@@ -238,6 +238,11 @@ void Arrow::updatePosition()
 
 }
 
+Rel::Relacja *Arrow::getRelacjaAdres()
+{
+    return relacja;
+}
+
 void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,QWidget *)
 {
     if (myStartItem->collidesWithItem(myEndItem))
